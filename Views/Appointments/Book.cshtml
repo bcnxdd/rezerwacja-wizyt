@@ -1,0 +1,62 @@
+﻿@model zadanie1.Models.Appointment
+@{
+    var slot = ViewBag.Slot as zadanie1.Models.AppointmentSlot;
+    ViewData["Title"] = "Zapis na wizytę";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Zapis na wizytę</h2>
+
+    <div class="alert alert-info">
+        <strong>Lekarz:</strong> @slot!.Doctor.FirstName @slot.Doctor.LastName (@slot.Doctor.Specialization.Name)<br />
+        <strong>Termin:</strong> @slot.Start.ToString("yyyy-MM-dd HH:mm") – @slot.End.ToString("HH:mm")
+    </div>
+
+    <form asp-action="Book" method="post" class="row g-3">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="AppointmentSlotId" />
+
+        <div class="col-md-6">
+            <label asp-for="FirstName" class="form-label"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="LastName" class="form-label"></label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Phone" class="form-label"></label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+        <div class="col-12">
+            <label asp-for="Address" class="form-label"></label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Potwierdź zapis</button>
+            <a asp-action="Available" asp-route-doctorId="@slot.DoctorId" class="btn btn-secondary ms-2">Anuluj</a>
+        </div>
+    </form>
+
+    <div class="mt-3">
+        <div asp-validation-summary="All" class="text-danger"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

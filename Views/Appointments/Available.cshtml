@@ -1,0 +1,40 @@
+﻿@model IEnumerable<zadanie1.Models.AppointmentSlot>
+@{
+    var doc = ViewBag.Doctor as zadanie1.Models.Doctor;
+    ViewData["Title"] = "Wolne terminy";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Wolne terminy: @doc!.FirstName @doc.LastName (@doc.Specialization.Name)</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">Brak wolnych terminów.</div>
+    }
+    else
+    {
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Początek</th>
+                    <th>Koniec</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td>@s.Start.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@s.End.ToString("HH:mm")</td>
+                        <td>
+                            <a asp-action="Book" asp-route-slotId="@s.Id" class="btn btn-sm btn-success">Zapisz się</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <a asp-controller="Doctors" asp-action="Index" class="btn btn-outline-secondary mt-3">← Wróć do listy lekarzy</a>
+</div>

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<zadanie1.Models.Doctor>
+@{
+    var specializations = ViewBag.Specializations as IEnumerable<zadanie1.Models.Specialization>;
+    ViewData["Title"] = "Lekarze";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Lista lekarzy</h2>
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-6">
+            <label class="form-label">Specjalizacja</label>
+            <select name="specializationId" class="form-select">
+                <option value="">— Wszystkie —</option>
+                @foreach (var s in specializations!)
+                {
+                    <option value="@s.Id">@s.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-6 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Filtruj</button>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Specjalizacja</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model)
+            {
+                <tr>
+                    <td>@d.FirstName</td>
+                    <td>@d.LastName</td>
+                    <td>@d.Specialization.Name</td>
+                    <td>
+                        <a asp-controller="Appointments" asp-action="Available" asp-route-doctorId="@d.Id" class="btn btn-sm btn-outline-primary">Wolne terminy</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
